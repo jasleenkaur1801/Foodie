@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Foodie | Real-Time Order Tracking</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fffaf6;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .tracker {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      width: 320px;
+      text-align: center;
+    }
+    h1 {
+      color: #ff6b35;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .status {
+      font-size: 18px;
+      margin: 20px 0;
+      font-weight: 600;
+    }
+    .progress {
+      height: 8px;
+      background: #eee;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #ff6b35, #ff914d);
+      transition: width 1s ease-in-out;
+    }
+    .eta {
+      color: #666;
+      font-size: 14px;
+    }
+    button {
+      margin-top: 15px;
+      background: #ff6b35;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover {
+      background: #e75b2b;
+    }
+  </style>
+</head>
+<body>
+  <div class="tracker">
+    <h1>🚚 Order Tracking</h1>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="status" id="status">Order Confirmed</div>
+    <div class="eta" id="eta">Estimated delivery in 20 mins</div>
+    <button onclick="restartTracking()">Restart</button>
+  </div>
+
+  <script>
+    const statuses = [
+      "Order Confirmed",
+      "Preparing Your Food",
+      "Out for Delivery",
+      "Delivered ✅"
+    ];
+    let step = 0;
+    const bar = document.getElementById("bar");
+    const statusEl = document.getElementById("status");
+
+    function updateStatus() {
+      statusEl.textContent = statuses[step];
+      bar.style.width = ((step + 1) / statuses.length) * 100 + "%";
+      if (step < statuses.length - 1) {
+        step++;
+        setTimeout(updateStatus, 4000); // change status every 4 seconds
+      }
+    }
+
+    function restartTracking() {
+      step = 0;
+      bar.style.width = "0%";
+      updateStatus();
+    }
+
+    // start tracking automatically
+    updateStatus();
+  </script>
+</body>
+</html>
